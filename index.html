@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComicVerse - Baca Manga, Manhwa, Manhua Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --accent: #ff6b6b;
+            --accent-hover: #ff5252;
+            --border: #2d2d44;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --success: #4ecdc4;
+            --warning: #ffe66d;
+            --error: #ff6b6b;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --accent: #3498db;
+            --accent-hover: #2980b9;
+            --border: #dee2e6;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle, .user-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover, .user-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .login-btn, .logout-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .login-btn:hover, .logout-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .toggle-form a {
+            color: var(--accent);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            background: var(--bg-secondary);
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            padding: 0.5rem 1rem;
+            background: var(--success);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            color: white;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        /* User Dashboard */
+        .user-dashboard {
+            display: none;
+            background: var(--bg-secondary);
+            padding: 2rem 0;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Bookmark System */
+        .bookmark-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .bookmark-btn:hover {
+            background: var(--accent);
+        }
+
+        .bookmark-btn.bookmarked {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Reading History */
+        .reading-history {
+            margin-top: 2rem;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .history-cover {
+            width: 60px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-title {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Filters */
+        .filters {
+            padding: 2rem 0;
+            background: var(--bg-secondary);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .genre-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .genre-tag {
+            padding: 0.3rem 0.8rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .genre-tag:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* Featured Section */
+        .featured {
+            margin-bottom: 3rem;
+        }
+
+        .featured-slider {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 300px;
+            background: linear-gradient(135deg, var(--accent), #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .featured-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Comic Grid */
+        .comic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .comic-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .comic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .comic-cover {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(45deg, var(--accent), #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .comic-info {
+            padding: 1rem;
+        }
+
+        .comic-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .comic-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .comic-genres {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .comic-genre {
+            padding: 0.2rem 0.5rem;
+            background: var(--accent);
+            border-radius: 10px;
+            font-size: 0.7rem;
+            color: white;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+
+        .stars {
+            color: #ffd700;
+        }
+
+        /* Reader Modal */
+        .reader-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+        }
+
+        .reader-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reader-header {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reader-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .reader-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reader-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .reader-pages {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow: auto;
+        }
+
+        .reader-page {
+            max-width: 100%;
+            max-height: 100%;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .comic-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .filter-tabs {
+                justify-content: center;
+            }
+
+            .featured-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .dashboard-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">
+                    📖 ComicVerse
+                </a>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Cari manga, manhwa, manhua..." id="searchInput">
+                </div>
+                <div class="nav-controls">
+                    <button class="theme-toggle" id="themeToggle">🌙</button>
+                    <div id="authSection">
+                        <button class="login-btn" id="loginBtn">Masuk</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Panel -->
+    <section class="admin-panel" id="adminPanel">
+        <div class="container">
+            <h3>Admin Panel</h3>
+            <div class="admin-controls">
+                <button class="admin-btn" onclick="showAddComicForm()">+ Tambah Komik</button>
+                <button class="admin-btn" onclick="showUserManagement()">👥 Kelola User</button>
+                <button class="admin-btn" onclick="showStatistics()">📊 Statistik</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Dashboard -->
+    <section class="user-dashboard" id="userDashboard">
+        <div class="container">
+            <h3>Dashboard Anda</h3>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="bookmarkCount">0</div>
+                    <div class="stat-label">Bookmark</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="readingCount">0</div>
+                    <div class="stat-label">Sedang Dibaca</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedCount">0</div>
+                    <div class="stat-label">Selesai Dibaca</div>
+                </div>
+            </div>
+            
+            <div class="reading-history">
+                <h4>Riwayat Baca Terakhir</h4>
+                <div id="historyList">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Masuk ke ComicVerse</h2>
+                <p>Nikmati fitur lengkap dengan akun Anda</p>
+            </div>
+            <form id="authForm">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label for="name">Nama Lengkap</label>
+                    <input type="text" id="name" placeholder="Masukkan nama lengkap">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Masukkan email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAuthModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="authSubmit">Masuk</button>
+                </div>
+            </form>
+            <div class="toggle-form">
+                <span id="toggleText">Belum punya akun? </span>
+                <a id="toggleLink" onclick="toggleAuthMode()">Daftar sekarang</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <section class="filters">
+        <div class="container">
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-filter="all">Semua</div>
+                <div class="filter-tab" data-filter="manga">Manga</div>
+                <div class="filter-tab" data-filter="manhwa">Manhwa</div>
+                <div class="filter-tab" data-filter="manhua">Manhua</div>
+                <div class="filter-tab" data-filter="ongoing">Ongoing</div>
+                <div class="filter-tab" data-filter="completed">Completed</div>
+            </div>
+            <div class="genre-filters">
+                <div class="genre-tag">Action</div>
+                <div class="genre-tag">Romance</div>
+                <div class="genre-tag">Comedy</div>
+                <div class="genre-tag">Drama</div>
+                <div class="genre-tag">Fantasy</div>
+                <div class="genre-tag">Adventure</div>
+                <div class="genre-tag">Slice of Life</div>
+                <div class="genre-tag">Horror</div>
+                <div class="genre-tag">Mystery</div>
+                <div class="genre-tag">Supernatural</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Featured Section -->
+            <section class="featured">
+                <h2 class="section-title">🔥 Featured</h2>
+                <div class="featured-slider">
+                    <div class="featured-content">
+                        <h2>Selamat Datang di ComicVerse</h2>
+                        <p>Platform terbaik untuk membaca manga, manhwa, dan manhua favorit Anda</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Latest Updates -->
+            <section>
+                <h2 class="section-title">📚 Latest Updates</h2>
+                <div class="comic-grid" id="comicGrid">
+                    <!-- Comics will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn">« Prev</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">Next »</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reader Modal -->
+    <div class="reader-modal" id="readerModal">
+        <div class="reader-content">
+            <div class="reader-header">
+                <div>
+                    <h3 id="readerTitle">Comic Title - Chapter 1</h3>
+                </div>
+                <div class="reader-controls">
+                    <button class="reader-btn" id="prevPage">← Prev</button>
+                    <span id="pageInfo">1 / 20</span>
+                    <button class="reader-btn" id="nextPage">Next →</button>
+                    <button class="reader-btn" id="closeReader">✕ Close</button>
+                </div>
+            </div>
+            <div class="reader-pages">
+                <div class="reader-page" id="readerPage">
+                    Halaman Komik Akan Ditampilkan Di Sini
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // User Management System
+        class UserManager {
+            constructor() {
+                this.currentUser = null;
+                this.users = [];
+                this.init();
+            }
+
+            init() {
+                // Initialize with sample data for demo
+                this.initSampleData();
+            }
+
+            initSampleData() {
+                this.users = [
+                    {
+                        id: 1,
+                        name: 'Admin',
+                        email: 'admin@comicverse.com',
+                        password: 'admin123',
+                        role: 'admin',
+                        bookmarks: [],
+                        readingHistory: [],
+                        joinDate: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        name: 'Demo User',
+                        email: 'user@demo.com',
+                        password: 'demo123',
+                        role: 'user',
+                        bookmarks: [1, 3, 5],
+                        readingHistory: [
+                            { comicId: 1, chapter: 5, timestamp: new Date().toISOString(), status: 'reading' },
+                            { comicId: 2, chapter: 10, timestamp: new Date().toISOString(), status: 'completed' }
+                        ],
+                        joinDate: new Date().toISOString()
+                    }
+                ];
+            }
+
+            register(userData) {
+                if (this.users.find(u => u.email === userData.email)) {
+                    throw new Error('Email sudah terdaftar');
+                }
+
+                const newUser = {
+                    id: Date.now(),
+                    name: userData.name,
+                    email: userData.email,
+                    password: userData.password,
+                    role: userData.email === 'admin@comicverse.com' ? 'admin' : 'user',
+                    bookmarks: [],
+                    readingHistory: [],
+                    joinDate: new Date().toISOString()
+                };
+
+                this.users.push(newUser);
+                return newUser;
+            }
+
+            login(email, password) {
+                const user = this.users.find(u => u.email === email && u.password === password);
+                if (!user) {
+                    throw new Error('Email atau password salah');
+                }
+
+                this.currentUser = user;
+                this.updateUI();
+                return user;
+            }
+
+            logout() {
+                this.currentUser = null;
+                this.updateUI();
+            }
+
+            updateUI() {
+                const authSection = document.getElementById('authSection');
+                const adminPanel = document.getElementById('adminPanel');
+                const userDashboard = document.getElementById('userDashboard');
+
+                if (this.currentUser) {
+                    authSection.innerHTML = `
+                        <div class="user-info">
+                            <button class="user-btn" onclick="toggleUserDashboard()">👤</button>
+                            <span>${this.currentUser.name}</span>
+                            <button class="logout-btn" onclick="userManager.logout()">Keluar</button>
+                        </div>
